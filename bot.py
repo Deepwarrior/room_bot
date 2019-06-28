@@ -14,8 +14,11 @@ class Bot:
         pass
 
     def register(self, message):
-        self.bot.reply_to(message, "Заявка принята! Ожидайте.")
-        self.inform_admins(create_link(message.from_user, "Игрок") + " зарегаться пытается.")
+        try:
+            self.inform_admins(create_link(message.from_user, "Игрок") + " зарегаться пытается.")
+            self.bot.reply_to(message, "Заявка принята! Ожидайте.")
+        except telebot.apihelper.ApiException:
+            pass
 
     def kusb(self, chat, player):
         pass
@@ -39,4 +42,7 @@ class Bot:
             if player.registration():
                 self.register(message)
             else:
-                self.bot.reply_to(message, "Регистрироваться дважды? Ну неее.")
+                try:
+                    self.bot.reply_to(message, "Регистрироваться дважды? Ну неее.")
+                except telebot.apihelper.ApiException:
+                    pass
