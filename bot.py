@@ -1,14 +1,21 @@
 import telebot
+from player import Player
+from bot_utils import create_link
 
 class Bot:
     def __init__(self, token):
-        bot = telebot.TeleBot(token)
+        self.bot = telebot.TeleBot(token)
+        self.bot_init()
 
     def give_link(self, chat, player):
         pass
 
-    def register(self, player):
+    def inform_admins(self, text):
         pass
+
+    def register(self, message):
+        self.bot.reply_to(message, "Заявка принята! Ожидайте.")
+        self.inform_admins(create_link(message.from_user, "Игрок") + " зарегаться пытается.")
 
     def kusb(self, chat, player):
         pass
@@ -24,3 +31,12 @@ class Bot:
 
     def change_info(self):
         pass
+
+    def bot_init(self):
+        @self.bot.message_handler(commands=["reg"])
+        def reg(message):
+            player = Player(message.from_user.id)
+            if player.registration():
+                self.register(message)
+            else:
+                self.bot.reply_to(message, "Регистрироваться дважды? Ну неее.")
