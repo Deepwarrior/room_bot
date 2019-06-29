@@ -31,7 +31,12 @@ class Bot:
             pass
 
     def kusb(self, chat, player):
-        pass
+        try:
+            self.bot.kick_chat_member(chat.id, player.id, 0)
+            self.bot.unban_chat_member(chat.id, player.id)
+        except telebot.apihelper.ApiException:
+            self.inform_admins("НЕ " + create_link(player.id, "КУСБНУЛОСЬ") + "\n" +
+                               "ОТСЕДОВА: " + chat.get_link())
 
     def parse_text(self, chat):
         pass
