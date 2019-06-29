@@ -1,6 +1,7 @@
 import telebot
 from player import Player
 from bot_utils import create_link
+import io
 
 class Bot:
     def __init__(self, token):
@@ -8,10 +9,19 @@ class Bot:
         self.bot_init()
 
     def give_link(self, chat, player):
-        pass
+        try:
+            # check is there way from current position?
+            if chat.id in player.get_map():
+                self.bot.send_message(player.id, chat.get_link())
+        except telebot.apihelper.ApiException:
+            pass
 
     def inform_admins(self, text):
-        pass
+        chat_id = io.get_chat_id("admin")
+        try:
+            self.bot.send_message(chat_id, text)
+        except telebot.apihelper.ApiException:
+            pass
 
     def register(self, message):
         try:
